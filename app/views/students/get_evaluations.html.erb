@@ -1,0 +1,78 @@
+<!-- Created by Houyi Fan 7/24/18 -->
+<div ng-app="evaluationApp" ng-controller="studentEvaluationCon" ng-init="init(<%= current_student.id %>)" ng-cloak>
+  <%if current_student != nil and current_student.id.to_s == params[:id].to_s%>
+
+    <div class="container bg-light py-5 px-5">
+
+      <div ng-hide="evaluationCompleteForm">
+        <h3> {{evaluation.title}}</h3>
+      </div>
+
+      <h1>Evaluations</h1>
+      <table class="table table-sm">
+        <thead>
+        <tr>
+          <th scope="col">Evaluation Name</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Posted Date</th>
+          <th scope="col">Completion Status</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- list student evaluations -->
+        <h3>Incomplete Evaluations</h3>
+        <% @evaluations.each do |evaluation| %>
+          <% if !evaluation.isCompleted%>
+            <tr>
+              <td><%= evaluation.title %></td>
+              <td><%= evaluation.due_date %></td>
+              <td><%= evaluation.posted_date %></td>
+              <td><%= evaluation.isCompleted %></td>
+            </tr>
+          <%end%>
+        <% end %>
+        </tbody>
+      </table>
+
+      <table class="table table-sm">
+        <thead>
+        <tr>
+          <th scope="col">Evaluation Name</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Posted Date</th>
+          <th scope="col">Completion Status</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- list student evaluations -->
+        <h3>Completed Evaluations</h3>
+        <% @evaluations.each do |evaluation| %>
+          <% if evaluation.isCompleted%>
+            <tr>
+              <td><%= evaluation.title %></td>
+              <td><%= evaluation.due_date %></td>
+              <td><%= evaluation.posted_date %></td>
+              <td><%= evaluation.isCompleted %></td>
+            </tr>
+          <%end%>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <%else%>
+    <div class="container">
+      <div class="jumbotron vertical-center my-5 py-5">
+        <div class="container text-center">
+          <h1 class="display-4">Whoops!</h1>
+          <p class="lead">You don't belong here!</p>
+        </div>
+      </div>
+
+    </div>
+  <%end%>
+
+</div>
+
+<%= javascript_include_tag 'studentEvaluationsContent' %>

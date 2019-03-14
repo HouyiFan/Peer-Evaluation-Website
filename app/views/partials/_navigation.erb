@@ -1,0 +1,43 @@
+<!-- Modified by Houyi Fan on 7/23/18, 7/24/18, 7/25/18 -->
+<% if current_professor %>
+  <!-- navbar to traverse the site -->
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-primary" >
+    <a href="<%= '/professors/'+current_professor.id.to_s %>" class="navbar-brand"><%= current_professor.first_name + " " + current_professor.last_name %></a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <%= link_to 'Courses', professor_courses_path(current_professor.id), :class => "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Evaluations', professor_professor_forms_path(current_professor.id), :class => "nav-link" %>
+      </li>
+      <!--li class="nav-item"-->
+        <%#= link_to 'Groups', '/professors/'+current_professor.id.to_s+'/groups', :class => "nav-link" %>
+      <!--/li-->
+
+    </ul>
+    <%= link_to "Sign Out",  destroy_professor_session_path, {:method => :delete, class: 'text-dark nav-link'} %>
+  </nav>
+
+<% elsif current_student%>
+  <!-- navbar to traverse the site -->
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-primary" >
+    <a href="<%= '/students/'+current_student.id.to_s %>" class="navbar-brand"><%= current_student.first_name + " " + current_student.last_name %></a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <%= link_to 'Courses', '/students/' + current_student.id.to_s + '/get_courses', :class => "nav-link" %>
+      </li>
+
+      <li class="nav-item">
+        <%= link_to 'Evaluations', '/students/' + current_student.id.to_s + '/get_evaluations', :class => "nav-link" %>
+      </li>
+    </ul>
+    <%= link_to "Sign Out", destroy_student_session_path, {:method => :delete, class: 'text-dark nav-link'} %>
+  </nav>
+<% else %>
+  <nav id="mainNav" class="navbar navbar-expand-lg navbar-light bg-primary">
+  </nav>
+<% end %>
+
+
+

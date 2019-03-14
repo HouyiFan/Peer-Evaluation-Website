@@ -1,0 +1,192 @@
+
+
+<div class="container-fluid bg-white" ng-app="evaluationApp" ng-controller="evaluationCon" ng-init="init(<%= professor.id %>)">
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{tempTitle}}</h4>
+        </div>
+        <div class="modal-body">
+          <p class="formContent">{{tempData}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class = "row py-2 bg-light border-bottom">
+    <h1 class="mr-auto pl-4"><%= title %>
+			<!-- "+" icon -->
+      <span class="mx-4">
+				<button id="new_evaluation" class="btn btn-secondary" ng-click="toggleAddEvaluationForm()">
+					<i class="fa fa-plus fa-2x"></i>
+				</button>
+			</span>
+    </h1>
+
+    <!-- toggle buttons -->
+    <div id="buttonToggle" class="btn-group btn-group-toggle h-50 mt-2 mr-3" data-toggle="buttons">
+      <button class="btn btn-primary" type="radio" ng-click="switchState()" ng-disabled="!isProfessorForm">Student Forms</button>
+      <button class="btn btn-primary" type="radio" ng-click="switchState()" ng-disabled="isProfessorForm || !clickedClass">Professor Forms</button>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <!-- List of Courses On The left -->
+    <div class="col-3 px-0 mx-0 bg-white" style="min-height:600px;" ng-hide="showAddEvaluationForm">
+      <div>
+        <div id="courseList" class="list-group list-group-flush">
+          <a id="list-tab" class="list-group-item list-group-item-action" role="tablist" name="course" ng-repeat="c in courses" ng-click="showDetail(c.id)"
+             data-toggle="list" href="#list-home" role="tab" aria-controls="home" ng-cloak> {{c.name}} </a>
+        </div>
+        <%#= link_to 'Add Course', new_professor_course_path(professor), :class => 'btn'%>
+
+      </div>
+    </div>
+
+    <!-- all of the page content to the right of the class list navigation bar -->
+    <!-- Add professors form -->
+    <div class="container-fluid bg-light px-5 py-5 " name="addEvaluationForm" ng-show="showAddEvaluationForm" ng-cloak>
+        <h3>Professor Form:</h3>
+        <br/>
+				<div class="form-group">
+          <label for="professor_form_title">Title</label>
+        	<input ng-model="$parent.new_evaluation_name" id="professor_form_title" type="text" name="professor_form[title]" class="form-control" placeholder=""/>
+        </div>
+       	<div class="form-group">
+          <label for="professor_form_due_date">Due date</label>
+        	<textarea ng-model="$parent.due_date" id="professor_form_due_date" name="professor_form[due_date]" class="form-control" placeholder="" ></textarea>
+        </div>
+
+       	<div class="form-group">
+        	<label for="professor_form_submission_date">Submission date</label>
+        	<textarea ng-model="$parent.submission_date" id="professor_form_submission_date" name="professor_form[submission_date]" class="form-control" placeholder=""></textarea>
+        </div>
+
+        <div class="form-row align-items-center mb-3">
+          <div class="col-auto">
+            <label for="classSelect">Class</label>
+            <select id="classSelect" class="custom-select" ng-model="selectedCourse">
+              <option ng-repeat="c in courses" value="{{c.id}}">{{c.dept + " " + c.number}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="professor_form_html_form">Form Questions</label>
+        	<textarea style="min-height:300px;"ng-model="$parent.new_form" name="professor_form[html_form]" id="professor_form_html_form" class="form-control" placeholder=""></textarea>
+        </div>
+
+          <p>
+            <button type="submit" ng-click="addEvaluation()" class="btn btn-success btn-sm">Submit</button>
+          </p>
+    </div>
+    <div id ="pageContent" class="col bg-light px-5 py-4" ng-hide="showAddEvaluationForm">
+      <!-- Course Title -->
+      <div class="text-center" ng-cloak>
+        <h1>{{course_name}}</h1>
+      </div>
+
+      <div class="row px-1 mt-5 " >
+        <!-- Evaluation Forms View -->
+        <div class="col" ng-switch on="isGroupTemp" ng-cloak>
+          <div class="bg-white rounded py-3 px-3" ng-switch-when="true">
+            <br />
+            <h3>Forms:</h3>
+
+            <table class="table table-sm">
+              <thead>
+              <th>Title</th>
+              <th>Due Date</th>
+              <th>Creation Date</th>
+              <th>Course ID</th>
+              <th colspan="2"/>
+              </thead>
+              <tr ng-repeat="form in forms">
+                <td>{{form.title}}</td>
+                <td>{{form.due_date}}</td>
+                <td>{{form.submission_date}} </td>
+                <td>{{form.course_id}} </td>
+                <td><button id="new_evaluation" class="btn btn-secondary btn-sm" ng-click="showForm(form.id)">
+                  View Form
+                </button></td>
+                <td><button id="assign_evaluation" class="btn btn-secondary btn-sm" ng-click="assignForm(form.id)">
+                  Assign Form
+                </button></td>
+              </tr>
+            </table>
+            <div class="formContent" ng-hide="formCont">
+              <hr />
+              <h1>{{form.title}}</h1>
+              <h6>{{"Due Date: " + form.due_date}}</h6>
+              <h6>{{"Submission: " + form.submission_date}}</h6>
+              <h3 class="">Evaluation:</h3>
+              <p class="">{{form.html_form}}</p>
+            </div>
+          </div>
+          <!-- Evaluation Students View -->
+          <div  ng-switch-when="false" ng-cloak>
+            <!-- Current Students Table -->
+
+            <div class="container-fluid mb-5 bg-white rounded py-3 px-3" ng-repeat="g in groups" ng-cloak>
+              <h2 class=" mr-auto">{{ g.name }}</h2>
+              <br>
+              <div ng-repeat="s in groupStudents[$index]">
+                <table class="table table-sm">
+                  <thead>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Dot #</th>
+                    <th>e-mail</th>
+                    <th colspan="2"/>
+                  </thead>
+                  <tr>
+                    <td>{{ s.first_name }}</td>
+                    <td>{{ s.last_name }}</td>
+                    <td>{{ s.dot_number }}</td>
+                    <td>{{ s.email }}</td>
+                    <td> <button class="btn btn-primary btn-sm float-right" ng-click="showEvaluations(g.id, s.id)">Show Evaluations</button> </td> <br>
+                  </tr>
+                </table>
+
+                <div ng-hide="studentEval[g.id][s.id]">
+                  <hr />
+                  <h3> Incomplete Forms</h3>
+                  <table class="table table-sm">
+                    <thead>
+                    <th>Title</th>
+                    <th />
+                    </thead>
+                    <tr ng-repeat="evaluation in evalData[g.id][s.id][1]">
+                      <td>{{evaluation.title}}</td>
+                    </tr>
+                  </table>
+                  <h3> Completed Forms</h3>
+                  <table class="table table-sm">
+                    <thead>
+                    <th>Title</th>
+                    <th />
+                    </thead>
+                    <tr ng-repeat="evaluation in evalData[g.id][s.id][0]">
+                      <td>{{evaluation.title}} <button class="btn btn-sm btn-success float-right" data-toggle="modal" data-target="#myModal" ng-click="getData(evaluation)">Show Detail</button></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'contentEvaluations' %>

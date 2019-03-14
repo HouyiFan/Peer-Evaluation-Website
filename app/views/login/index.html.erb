@@ -1,0 +1,46 @@
+<div class="container px-5">
+  <div class="jumbotron vertical-center my-5 py-5">
+    <div class="container text-center">
+      <h1 class="display-4">Peer Evaluation</h1>
+      <%if !current_student && !current_professor %>
+        <p class="lead">Login or join as a student or professor</p>
+        <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='/students/sign_in'">Student</button>
+        <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='/professors/sign_in'">Professor</button>
+      <%else%>
+        <p class="lead">Welcome!</p>
+      <%end%>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="container-fluid jumbotron mt-4" id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h4 class="text-center text-secondary">What is Peer Evaluation?</h4>
+        <br/>
+        <p class="text-secondary">Peer Evaluation is just what it sounds like; a tool to help university instructors and students complete
+          evaluations of their peers for group projects and presentations.</p>
+      </div>
+      <div class="col">
+        <h4 class="text-center text-secondary">Who can use Peer Evaluation?</h4>
+        <br/>
+        <p class="text-secondary">Peer Evaluation is free to use by anyone, but is built for student and instructors in
+          a university setting. We hope to include additional features in the future to make this tool accessible to more environments outside
+        of academia.</p>
+      </div>
+      <div class="col">
+        <h4 class="text-center text-secondary">How do I sign up?</h4>
+        <br/>
+        <p class="text-secondary">It's very simple and secure to sign up with Peer Evaluation. Simply click a prompt above to sign up as a student
+          or professor. Just follow the <em>"sign-up"</em> link on the sign in page to create a new user account!</p>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+

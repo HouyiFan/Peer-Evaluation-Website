@@ -1,0 +1,185 @@
+<!-- Modified by Jeb Alawi on 7/23/18 List Groups and Students -->
+
+<div class="container-fluid bg-white" ng-app="courseApp" ng-controller="courseCon" ng-init="init(<%= professor.id %>)">
+
+  <div class = "row py-2 bg-light border-bottom">
+    <!-- heading -->
+    <h1 class="mr-auto pl-4"><%= title %></h1>
+
+    <!-- toggle buttons -->
+    <div id="buttonToggle" class="btn-group btn-group-toggle h-50 mt-2 mr-3" data-toggle="buttons">
+      <button class="btn btn-primary" type="radio" ng-click="switchState()" ng-disabled="!isGroup" checked>Students</button>
+      <button class="btn btn-primary" type="radio" ng-click="switchState()" ng-disabled="isGroup || !clickedClass">Groups</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-3 px-0 mx-0 bg-white" style="min-height:600px;">
+      <div>
+
+        <!-- List of Courses On The left -->
+        <div id="courseList" class="list-group list-group-flush" role="tablist"  >
+          <a class="list-group-item list-group-item-action" id="list-tab" name="course" ng-repeat="c in courses" ng-click="showDetail(c.id)"
+             data-toggle="list" href="#list-home" role="tab" aria-controls="home" ng-cloak> {{c.name}} </a>
+        </div>
+        <%#= link_to 'Add Course', new_professor_course_path(professor), :class => 'btn'%>
+        <a class="list-group-item list-group-item-action text-success text-center" name="addCourse" ng-click="toggleAddCourseForm()" ng-cloak>Add Course</a>
+
+        <!-- Add courses form -->
+        <div class="container py-3 bg-white">
+          <form name="addCourseForm" ng-submit="addCourse()" ng-show="showAddCourseForm" ng-cloak>
+            <div class="form-group">
+              <label for="dept">Department</label>
+              <input ng-model="$parent.course_dept" id="dept" type="text" class="form-control" placeholder="" required/>
+            </div>
+            <div class="form-group">
+              <label for="courseNumber">Course Number</label>
+              <input ng-model="$parent.course_number" id="courseNumber" type="number" class="form-control" placeholder="" required/>
+            </div>
+            <div class="form-group">
+              <label for="section">Section</label>
+              <input ng-model="$parent.course_section" id="section" type="number" class="form-control" placeholder="" required/>
+            </div>
+            <div class="form-group">
+              <label for="courseName">Name</label>
+              <input ng-model="$parent.new_course_name" id="courseName" type="text" class="form-control" placeholder="" required/>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id ="pageContent" class="col bg-light px-5 py-4">
+      <!-- Course Title -->
+      <div class="text-center ng-cloak">
+        <h1>{{course_name}}</h1>
+      </div>
+      <div class="row px-1 mt-5">
+        <div class="col" ng-switch on="isGroupTemp" ng-cloak>
+          <!-- Course Groups View -->
+          <div ng-switch-when="true">
+            <br />
+            <h2 class="mx-1">Groups:</h2>
+
+            <!-- Add group form -->
+            <form class="form-inline mb-3 mx-1" name="addGroupForm" ng-submit="addGroup()">
+              <div class="form-group">
+                <input ng-model="$parent.group_name" type="text" class="form-control mr-1" placeholder="Group Name" required/>
+              </div>
+              <button type="submit" class="btn btn-success btn-sm">Add Group</button>
+            </form>
+            <hr class="mx-1 mb-4"/>
+            <!-- Repeat Group Tables -->
+            <div class="container-fluid mb-5 bg-white rounded px-3 py-3" ng-repeat="g in groups" ng-cloak>
+              <h4 class=" mr-auto mb-3">{{ g.name }}</h4>
+              <table class="table table-sm">
+                <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Dot #</th>
+                <th>e-mail</th>
+                <th />
+                <th />
+                </thead>
+                <tr ng-repeat="s in groupStudents[$index]">
+                  <td>{{ s.first_name }}</td>
+                  <td>{{ s.last_name }}</td>
+                  <td>{{ s.dot_number }}</td>
+                  <td>{{ s.email }}</td>
+                  <td> <button class="btn btn-primary btn-sm float-right" ng-click="deleteStudentFromGroup(g.id, s.id)">Delete</button> </td>
+                </tr>
+              </table>
+              <hr/>
+              <!-- Query/Add Student to Group -->
+              <div class="form-row ">
+                <div class="col-auto">
+                  <select class="custom-select" ng-model="selectedStd[g.id]">
+                    <option ng-repeat="s in students" value="{{s.id}}">{{s.first_name + " " + s.last_name + "." + s.dot_number}}</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <button class="btn btn-success btn-sm" ng-click="addStdToGroup(g.id)">Add Student</button>
+                  <button class="btn btn-danger btn-sm float-right ml-5" ng-click="deleteGroup(g.id)">Delete Group</button>
+                </div>
+
+              </div>
+
+              <hr class=" my-3"/>
+            </div>
+
+          </div>
+
+          <!-- Course Students View -->
+          <div class=" rounded mt-3" ng-switch-when="false" ng-cloak>
+            <!-- Current Students Table -->
+            <div class="bg-white px-3 py-3  mb-5 rounded">
+              <h2 class=" mr-auto">Current Students:</h2>
+              <table class="table table-hover table-sm">
+                <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Dot #</th>
+                <th>e-mail</th>
+                <th />
+                </thead>
+                <tr ng-repeat="s in students">
+                  <td>{{ s.first_name }}</td>
+                  <td>{{ s.last_name }}</td>
+                  <td>{{ s.dot_number }}</td>
+                  <td>{{ s.email }}</td>
+                  <td> <button class="btn btn-danger btn-sm" ng-click="deleteStudent(s.id)">Delete</button> </td>
+                </tr>
+              </table>
+              <br />
+            </div>
+
+
+            <!-- Query/Add Students -->
+            <div class="bg-white px-3 py-3 rounded">
+              <h2 class=" mr-auto">Query/Add Students:</h2>
+              <form ng-submit="submitQuery()">
+                <div class="row">
+                  <div class="col-3">
+                    First Name: <br><input class="form-control" type="text" name="student_id" ng-model="$parent.std_fname" />
+                  </div>
+                  <div class="col-3">
+                    Last Name: <br><input class="form-control" type="text" name="student_id" ng-model="$parent.std_lname" />
+                  </div>
+                  <div class="col-3">
+                    Dot Number: <br><input class="form-control" type="text" name="student_dot" ng-model="$parent.std_dot" />
+                  </div>
+                  <div class="col-3">
+                    <button class="btn btn-primary mt-4 btn-sm" type="submit">Query Students</button>
+                  </div>
+                </div>
+              </form>
+
+              <br />
+              <table class="table table-hover table-sm">
+                <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Dot #</th>
+                <th>e-mail</th>
+                <th />
+                </thead>
+                <tr ng-repeat="s in studentsFind">
+                  <td>{{ s.first_name }}</td>
+                  <td>{{ s.last_name }}</td>
+                  <td>{{ s.dot_number }}</td>
+                  <td>{{ s.email }}</td>
+                  <td> <button class="btn btn-success btn-sm" ng-disable="processing" ng-click="addStudent(s.id)">Add</button> </td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'content' %>
+

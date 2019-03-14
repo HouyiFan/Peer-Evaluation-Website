@@ -1,0 +1,53 @@
+<!-- Modified by Houyi Fan 7/22/18 -->
+<%if current_professor.id.to_s == params[:id].to_s%>
+
+<div class="container bg-light py-5 px-5">
+  <h1> Profile</h1>
+  <h4> Name: <%=@professor.first_name.capitalize + " " + @professor.last_name.capitalize%>  </h4>
+  <h4> Dot Number: <%= @professor.dot_number %> </h4>
+	<%= link_to 'Edit Profile', edit_professor_path(@professor) %> |
+	<%= link_to 'Cancel Account', professor_path(@professor),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+  <hr/>
+
+  <h1>Courses</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Course Name</th>
+      <th scope="col">Department</th>
+      <th scope="col">Number</th>
+      <th scope="col">Section</th>
+      <th scope="col">course_id</th>
+      <th />
+    </tr>
+    </thead>
+    <tbody>
+    <!-- list student courses -->
+    <% @course_list = @professor.courses %>
+    <% @course_list.each do |course| %>
+      <tr>
+        <th scope="row"><%= course.name %></th>
+        <td><%= course.dept %></td>
+        <td><%= course.number %></td>
+        <td><%= course.section %></td>
+        <td><%= course.id %></td>
+        <td><%= link_to 'Delete', professor_course_path(@professor, course), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>
+<%else%>
+  <div class="container">
+    <div class="jumbotron vertical-center my-5 py-5">
+      <div class="container text-center">
+        <h1 class="display-4">Whoops!</h1>
+          <p class="lead">You don't belong here!</p>
+      </div>
+    </div>
+
+  </div>
+<%end%>

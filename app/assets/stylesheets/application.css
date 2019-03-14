@@ -1,0 +1,51 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+#mainNav {
+    height:70px;
+}
+
+#course_content{
+    display:none;
+}
+
+a.course_link {
+    width:100%;
+}
+
+/* removes spin button for number input fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+div#courseList:first-child{
+    border-top: 1px solid gainsboro;}
+
+div#courseList:last-child{
+    border-bottom: 1px solid gainsboro;}
+
+div#courseList a{
+    border-right: 1px solid gainsboro;}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+.formContent{
+    white-space: pre-wrap;
+}

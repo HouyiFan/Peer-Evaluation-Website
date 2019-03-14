@@ -1,0 +1,25 @@
+<%= javascript_include_tag 'content' %>
+
+<div class="container-fluid">
+
+  <!--Header For Evaluations-->
+  <div class = "row">
+    <h1 class="px-3 py-3">Evaluations</h1> <span><b>Student/Groups</b></span>
+  </div>
+
+  <!-- Main Content on the page. Vertical list of courses on the left and page content on the right -->
+  <div class="row">
+
+    <!--List of courses on the left-->
+    <div class="col-2 px-0 mx-0">
+      <%= render partial: "professors/partials/course_dropdown.erb", locals: {courses: @courses, professor: @professor} %>
+    </div>
+
+    <!--Content of the page on the right: filled with a specific courses evaluations-->
+
+    <div class="col bg-light">
+      <%= render partial: "professors/partials/evaluation_form_list.erb", locals: {course: @course, professor: @professor, professor_forms: @professor_forms} %>
+    </div>
+
+  </div>
+</div>
