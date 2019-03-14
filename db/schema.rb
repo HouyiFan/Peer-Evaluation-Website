@@ -12,20 +12,23 @@
 
 ActiveRecord::Schema.define(version: 2018_07_26_234147) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "courses", force: :cascade do |t|
     t.integer "section"
     t.integer "number"
     t.string "name"
     t.string "dept"
-    t.integer "professor_id"
+    t.bigint "professor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["professor_id"], name: "index_courses_on_professor_id"
   end
 
   create_table "courses_students", force: :cascade do |t|
-    t.integer "course_id"
-    t.integer "student_id"
+    t.bigint "course_id"
+    t.bigint "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_courses_students_on_course_id"
@@ -39,7 +42,7 @@ ActiveRecord::Schema.define(version: 2018_07_26_234147) do
     t.string "professor_form_info"
     t.integer "professor_form_id"
     t.text "student_form_info"
-    t.integer "student_id"
+    t.bigint "student_id"
     t.boolean "isCompleted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,15 +52,15 @@ ActiveRecord::Schema.define(version: 2018_07_26_234147) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
-    t.integer "course_id"
+    t.bigint "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_groups_on_course_id"
   end
 
   create_table "groups_students", force: :cascade do |t|
-    t.integer "group_id"
-    t.integer "student_id"
+    t.bigint "group_id"
+    t.bigint "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_groups_students_on_group_id"
@@ -69,7 +72,7 @@ ActiveRecord::Schema.define(version: 2018_07_26_234147) do
     t.string "due_date"
     t.string "submission_date"
     t.text "html_form"
-    t.integer "course_id"
+    t.bigint "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_professor_forms_on_course_id"
@@ -113,4 +116,8 @@ ActiveRecord::Schema.define(version: 2018_07_26_234147) do
     t.index ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "courses_students", "courses"
+  add_foreign_key "courses_students", "students"
+  add_foreign_key "groups_students", "groups"
+  add_foreign_key "groups_students", "students"
 end
