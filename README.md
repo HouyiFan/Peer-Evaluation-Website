@@ -1,4 +1,3 @@
-# Project 6
 ### Ruby on Rails Project
 
 #### Technologies and Frameworks
