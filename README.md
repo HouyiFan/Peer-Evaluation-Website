@@ -1,4 +1,4 @@
-### Ruby on Rails Project
+## Ruby on Rails Project
 
 #### Technologies and Frameworks
 * Devise - for user authentication
